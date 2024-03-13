@@ -43,6 +43,7 @@ const uploadPhoto = multer({
 // Redimensiona las imágenes adjuntas a 300x300 píxeles, 
 //las convierte a formato JPEG con calidad del 90% y las guarda 
 //en una carpeta específica.
+
 const productImgResize = async (req, res, next) => {
     if (!req.files) return next();
     await Promise.all(
