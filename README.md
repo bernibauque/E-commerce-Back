@@ -1,6 +1,8 @@
-# Proyecto de Backend para Ecommerce
+# Proyecto de Backend para Ecommerce "Green Market"
 
-Este proyecto, denominado "ecomerce-back" en su versión 1.0.0, consiste en un backend desarrollado en Node.js para una aplicación de Ecommerce. Utiliza diversas bibliotecas y middlewares para proporcionar funcionalidades clave.
+Este repositorio contiene el backend de un sistema de Ecommerce para la venta de alimentos saludables. 
+Desarrollado en Node.js y MongoDB, ofrece una estructura eficiente para la gestión de productos, usuarios y pedidos en línea. 
+Utiliza una API RESTful para una comunicación fluida con las aplicaciones cliente y JWT para la autenticación segura.
 
 Para iniciar el servidor en modo de desarrollo, utiliza el comando `npm run server`.
 
