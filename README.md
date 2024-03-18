@@ -1,15 +1,30 @@
-/*
-Para comenzar hacer npm run server
+# Proyecto de Backend para Ecommerce
 
-Bibliotecas utilizadas:
+Este proyecto, denominado "ecomerce-back" en su versión 1.0.0, consiste en un backend desarrollado en Node.js para una aplicación de Ecommerce. Utiliza diversas bibliotecas y middlewares para proporcionar funcionalidades clave.
 
-1- NODEMAILER:  biblioteca de Node.js que facilita el envío de correos electrónicos desde aplicaciones Node.js. Proporciona una interfaz sencilla para la creación y el envío de mensajes de correo electrónico, lo que facilita la integración de la funcionalidad de correo electrónico en tus aplicaciones Node.js.
+Para iniciar el servidor en modo de desarrollo, utiliza el comando `npm run server`.
 
-Este Proyecto utiliza los siguientes Middlewares:
+## Bibliotecas Utilizadas
 
-1- BODY-PARSER: Este middleware se utiliza para analizar los cuerpos de las solicitudes en formato JSON y urlencoded. Permite acceder fácilmente a los datos enviados en el cuerpo de la solicitud.
+1. **bcrypt** (^5.1.1): Biblioteca para el hash de contraseñas.
+2. **body-parser** (^1.20.2): Middleware para analizar cuerpos de solicitudes HTTP.
+3. **cloudinary** (^2.0.3): API para almacenamiento y manipulación de imágenes en la nube.
+4. **cookie-parser** (^1.4.6): Middleware para analizar cookies en solicitudes HTTP.
+5. **dotenv** (^16.4.5): Carga de variables de entorno desde un archivo `.env`.
+6. **express** (^4.18.3): Framework web de Node.js.
+7. **express-async-handler** (^1.2.0): Manejador de errores asíncronos para Express.
+8. **googleapis** (^133.0.0): API para acceder a servicios de Google.
+9. **jsonwebtoken** (^9.0.2): Implementación de tokens JWT para autenticación.
+10. **mongoose** (^8.2.1): Biblioteca para modelado de datos de MongoDB.
+11. **morgan** (^1.10.0): Middleware para registro de solicitudes HTTP.
+12. **multer** (^1.4.5-lts.1): Middleware para manejo de formularios multipartes.
+13. **nodemailer** (^6.9.11): Librería para envío de correos electrónicos.
+14. **path** (^0.12.7): Utilidades para manejo de rutas de archivos.
+15. **sharp** (^0.33.2): Biblioteca para procesamiento de imágenes.
+16. **slugify** (^1.6.6): Utilidad para generar slugs a partir de texto.
 
-2- COOKIE-PARSER: Es un middleware para Express en Node.js que facilita el manejo de cookies en tus aplicaciones web. El propósito principal de cookie-parser es analizar las cookies que llegan en las solicitudes HTTP y convertirlas en un objeto JavaScript fácil de manejar. También proporciona una forma sencilla de establecer cookies en las respuestas HTTP que envías al navegador.
+## Middlewares Utilizados
 
-3- MORGAN: Es un middleware para el framework web Node.js Express que se utiliza para registrar solicitudes HTTP entrantes en el servidor. Proporciona un registro de las solicitudes en la consola del servidor o en cualquier otro destino que configures.
-*/
+1. **BODY-PARSER**: Analiza cuerpos de solicitudes en formato JSON y urlencoded.
+2. **COOKIE-PARSER**: Facilita el manejo de cookies en aplicaciones web.
+3. **MORGAN**: Registra solicitudes HTTP entrantes en el servidor.
