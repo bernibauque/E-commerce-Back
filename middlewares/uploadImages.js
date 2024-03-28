@@ -1,7 +1,7 @@
 const multer = require("multer");
 const sharp = require("sharp");
 const path = require("path");
-const fs = require('fs')
+const fs = require('fs');
 
 // Configura el almacenamiento de archivos para multer, 
 //especificando la carpeta de destino y el nombre de archivo 
@@ -43,7 +43,6 @@ const uploadPhoto = multer({
 // Redimensiona las imágenes adjuntas a 300x300 píxeles, 
 //las convierte a formato JPEG con calidad del 90% y las guarda 
 //en una carpeta específica.
-
 const productImgResize = async (req, res, next) => {
     if (!req.files) return next();
     await Promise.all(
@@ -53,13 +52,41 @@ const productImgResize = async (req, res, next) => {
                 .toFormat("jpeg")
                 .jpeg({ quality: 90 })
                 .toFile(`public/images/products/${file.filename}`);
-            fs.unlinkSync(`public/images/products/${file.filename}`)
+            fs.unlinkSync(`public/images/products/${file.filename}`);
         })
     );
     next();
 };
+/* Opcion Alternativa: elimina los archivos de forma síncrona, sin manejar los errores individualmente.
+const productImgResize = async (req, res, next) => {
+    if (!req.files) return next();
+    try {
+        await Promise.all(
+            req.files.map(async (file) => {
+                await sharp(file.path)
+                    .resize(300, 300)
+                    .toFormat("jpeg")
+                    .jpeg({ quality: 90 })
+                    .toFile(`public/images/products/${file.filename}`);
 
-// Misma funcion que arriba pero para blogs
+                // Eliminar el archivo original después de redimensionarlo
+                try {
+                    await fs.unlink(`public/images/products/${file.filename}`);
+                    console.log(`Archivo eliminado: ${file.filename}`);
+                } catch (err) {
+                    console.error("Error al eliminar el archivo:", err);
+                }
+            })
+        );
+
+        next();
+    } catch (error) {
+        console.error("Error al redimensionar las imágenes:", error);
+        next(error);
+    }
+};*/
+
+// Misma funcion para resize y eliminacion pero para blogs
 const blogImgResize = async (req, res, next) => {
     if (!req.files) return next();
     await Promise.all(

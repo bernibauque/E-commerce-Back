@@ -22,8 +22,8 @@ router.put(
     authMiddleware,
     isAdmin,
     uploadPhoto.array("images", 10),
-    productImgResize,
-    uploadImages
+    uploadImages,
+    productImgResize // Mover uploadImages antes de productImgResize para evitar error EPRM
 );
 router.get("/:id", getaProduct);
 router.put('/wishlist', authMiddleware, addToWishList);

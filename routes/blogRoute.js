@@ -19,8 +19,8 @@ router.put(
     authMiddleware,
     isAdmin,
     uploadPhoto.array("images", 2),
-    blogImgResize,
-    uploadImages
+    uploadImages,
+    blogImgResize
 );
 router.put("/likes", authMiddleware, likeBlog);
 router.put("/dislikes", authMiddleware, dislikeBlog);
