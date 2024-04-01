@@ -127,7 +127,6 @@ const logout = asyncHandler(async (req, res) => {
 
 // Update a user - Modificar usuario
 const updatedaUser = asyncHandler(async (req, res) => {
-    console.log();
     const { _id } = req.user;
     validateMongoDbId(_id);
 
@@ -149,6 +148,26 @@ const updatedaUser = asyncHandler(async (req, res) => {
         throw new Error(error);
     }
 });
+
+// Save user Address
+const saveAddress = asyncHandler(async (req, res, next) => {
+    const { _id } = req.user;
+    validateMongoDbId(_id);
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            _id,
+            {
+                address: req?.body?.address,
+            },
+            {
+                new: true,
+            }
+        );
+        res.json(updatedUser);
+    } catch (error) {
+        throw new Error(error);
+    }
+})
 
 // Get all users - Obtener todos los usuarios
 const getallUser = asyncHandler(async (req, res) => {
@@ -249,6 +268,7 @@ const updatePassword = asyncHandler(async (req, res) => {
     }
 });
 
+// Recuperar Contrasena 
 const forgotPasswordToken = asyncHandler(async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
@@ -272,6 +292,7 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
     }
 });
 
+//Resetear contrasena
 const resetPassword = asyncHandler(async (req, res) => {
     const { password } = req.body;
     const { token } = req.params;
@@ -316,5 +337,6 @@ module.exports = {
     forgotPasswordToken,
     resetPassword,
     loginAdmin,
-    getWishList
+    getWishList,
+    saveAddress
 };
