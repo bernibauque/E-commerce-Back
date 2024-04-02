@@ -1,4 +1,6 @@
 const User = require("../models/userModel");
+const Product = require("../models/productModel");
+const Cart = require("../models/cartModel");
 const asyncHandler = require("express-async-handler");
 const { generateToken } = require("../config/jwtToken");
 const validateMongoDbId = require("../utils/validateMongdbId");
@@ -322,6 +324,44 @@ const getWishList = asyncHandler(async (req, res) => {
     }
 });
 
+// Carrito del usuario
+const userCart = asyncHandler(async (req, res) => {
+    const { cart } = req.body;
+    const { _id } = req.user;
+    validateMongoDbId(_id);
+    try {
+        let products = []
+        const user = await User.findById(_id);
+        // Chequeamos si el producto ya esiste en el carrito
+        const alreadyExistCart = await Cart.findOne({ orderby: user._id });
+        if (alreadyExistCart) {
+            alreadyExistCart.remove();
+        }
+        for (let i = 0; i < cart.length; i++) {
+            let object = {};
+            object.product = cart[i]._id;
+            object.count = cart[i].count;
+            //object.color = cart[i].color;
+            let getPrice = await Product.findById(cart[i]._id).select("price").exec();
+            object.price = getPrice.price;
+            products.push(object);
+        }
+        let cartTotal = 0;
+        for (let i = 0; i < products.length; i++) {
+            cartTotal = cartTotal + products[i].price * products[i].count;
+        }
+        //res.json(products);
+        let newCart = await new Cart({
+            products,
+            cartTotal,
+            orderby: user?._id, // orderby es el id del usuario logueado que hace la req
+        }).save();
+        res.json(newCart);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
 module.exports = {
     createUser,
     loginUserCtrl,
@@ -338,5 +378,6 @@ module.exports = {
     resetPassword,
     loginAdmin,
     getWishList,
-    saveAddress
+    saveAddress,
+    userCart
 };
