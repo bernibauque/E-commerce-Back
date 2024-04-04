@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Cart = require("../models/cartModel");
+const Coupon = require("../models/couponModel");
 const asyncHandler = require("express-async-handler");
 const { generateToken } = require("../config/jwtToken");
 const validateMongoDbId = require("../utils/validateMongdbId");
@@ -335,7 +336,7 @@ const userCart = asyncHandler(async (req, res) => {
         // Chequeamos si el producto ya esiste en el carrito
         const alreadyExistCart = await Cart.findOne({ orderby: user._id });
         if (alreadyExistCart) {
-            alreadyExistCart.remove();
+            await Cart.deleteOne({ _id: alreadyExistCart._id }); // Utilizar deleteOne en lugar de remove
         }
         for (let i = 0; i < cart.length; i++) {
             let object = {};
@@ -389,6 +390,40 @@ const emptyCart = asyncHandler(async (req, res) => {
     }
 });
 
+// Aplicacion de Coupon
+const applyCoupon = asyncHandler(async (req, res) => {
+    const { coupon } = req.body;
+    const { _id } = req.user;
+    validateMongoDbId(_id);
+
+    // Buscar el cupón válido
+    const validCoupon = await Coupon.findOne({ name: coupon });
+    if (!validCoupon) {
+        throw new Error("Invalid Coupon");
+    }
+
+    // Buscar el carrito del usuario
+    const cart = await Cart.findOne({ orderby: _id });
+    if (!cart) {
+        throw new Error("User does not have a cart");
+    }
+
+    // Calcular el total con descuento
+    let totalAfterDiscount = (
+        cart.cartTotal -
+        (cart.cartTotal * validCoupon.discount) / 100
+    ).toFixed(2);
+
+    // Actualizar el carrito con el total después del descuento
+    const updatedCart = await Cart.findOneAndUpdate(
+        { orderby: _id },
+        { totalAfterDiscount },
+        { new: true }
+    );
+
+    res.json(updatedCart.totalAfterDiscount);
+});
+
 module.exports = {
     createUser,
     loginUserCtrl,
@@ -408,5 +443,6 @@ module.exports = {
     saveAddress,
     userCart,
     getUserCart,
-    emptyCart
+    emptyCart,
+    applyCoupon
 };
