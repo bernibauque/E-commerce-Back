@@ -3,8 +3,11 @@ const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const User = require('../models/userModel');
 const validateMongoDbId = require("../utils/validateMongdbId");
-const cloudinaryUploadImg = require("../utils/cloudinary");
 const fs = require('fs');
+const {
+    cloudinaryUploadImg,
+    cloudinaryDeleteImg
+} = require("../utils/cloudinary");
 
 // Create a Product
 const createProduct = asyncHandler(async (req, res) => {
@@ -221,43 +224,16 @@ const uploadImages = asyncHandler(async (req, res) => {
     }
 });
 
-/*Opcion Alternativa: fs.unlink (asincrona)
-const uploadImages = asyncHandler(async (req, res) => {
+// Controlador de ruta que maneja la carga de imágenes para un producto
+const deleteImages = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    validateMongoDbId(id);
-    console.log(req.files);
     try {
-        const uploader = (path) => cloudinaryUploadImg(path, "images");
-        const urls = [];
-        const files = req.files;
-        for (const file of files) {
-            const { path } = file;
-            const newpath = await uploader(path);
-            console.log(newpath);
-            urls.push(newpath);
-            console.log(file);
-            fs.unlink(path, (error) => {
-                if (error) {
-                    console.error(`Error al eliminar el archivo: ${error.message}`);
-                }
-            });
-        }
-        const findProduct = await Product.findByIdAndUpdate(
-            id,
-            {
-                images: urls.map((file) => {
-                    return file;
-                }),
-            },
-            {
-                new: true,
-            }
-        );
-        res.json(findProduct);
+        const deleted = cloudinaryDeleteImg(id, "images");
+        res.json({ message: "Deleted" });
     } catch (error) {
         throw new Error(error);
     }
-});*/
+});
 
 module.exports = {
     createProduct,
@@ -267,5 +243,8 @@ module.exports = {
     deleteProduct,
     addToWishList,
     rating,
-    uploadImages
+    uploadImages,
+    deleteImages,
 };
+
+cloudinaryDeleteImg
