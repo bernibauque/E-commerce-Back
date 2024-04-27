@@ -12,6 +12,7 @@ const crypto = require('crypto');
 const jwt = require("jsonwebtoken");
 const sendEmail = require("./emailCtrl");
 
+
 //Crear un Usuario
 const createUser = asyncHandler(async (req, res) => {
     /* Get the email from req.body */
