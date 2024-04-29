@@ -17,8 +17,8 @@ const enqRouter = require("./routes/enqRoute");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
-dbConnect();
 
+dbConnect();
 app.use(morgan("dev"));
 app.use(cors());
 app.use(bodyParser.json());
@@ -34,9 +34,9 @@ app.use("/api/brand", brandRouter);
 app.use("/api/coupon", couponRouter);
 app.use("/api/enquiry", enqRouter);
 app.use("/api/upload", uploadRouter);
+
 app.use(notFound);
 app.use(errorHandler);
-
 app.listen(PORT, () => {
     console.log(`Server is running at PORT ${PORT}`);
 });
