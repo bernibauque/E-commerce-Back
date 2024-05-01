@@ -37,7 +37,13 @@ var productSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    images: [],
+    images: [
+        {
+            public_id: String,
+            url: String,
+        },
+    ],
+    tags: [],
     ratings: [
         {
             star: Number,
@@ -53,10 +59,5 @@ var productSchema = new mongoose.Schema({
     { timestamps: true }
 );
 
-//Export the model
-module.exports = mongoose.model('Product', productSchema);
 
-// Establecer "select: false" en un campo del esquema de Mongoose,
-// se está configurando ese campo para que no se incluya automáticamente
-// cuando se realiza una consulta para recuperar documentos de la base
-// de datos.
+module.exports = mongoose.model('Product', productSchema);
